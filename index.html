@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Ananya Living - Smart, modular, and elegant living spaces for every Indian home." />
+  <title>Ananya Living</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+      padding-top: 90px;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 10px 20px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo img {
+      height: 50px;
+    }
+
+    .logo span {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #10b981;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+
+    /* Hide hamburger when modal is open */
+    .modal-open .hamburger {
+      display: none !important;
+    }
+
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      background: rgba(0,0,0,0.9);
+      padding: 10px 0;
+      position: absolute;
+      top: 70px;
+      left: 0;
+      z-index: 999;
+    }
+
+    .mobile-nav a {
+      padding: 10px 20px;
+      border-top: 1px solid #444;
+      color: white;
+      text-decoration: none;
+    }
+
+    .mobile-nav a:hover {
+      background-color: #10b981;
+    }
+
+    .background-slider {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .slider-image {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+
+    .slider-image.active {
+      opacity: 1;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 40px;
+      flex-wrap: wrap;
+    }
+
+    .segments {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 20px;
+      flex: 1;
+    }
+
+    .segment {
+      flex: 1 1 200px;
+      max-width: 250px;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(6px);
+      padding: 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      color: white;
+    }
+
+    .segment:hover {
+      transform: scale(1.03);
+    }
+
+    .segment h2 {
+      margin-bottom: 5px;
+    }
+
+    .segment p strong {
+      display: block;
+      margin-top: 8px;
+      color: #10b981;
+      font-size: 0.95rem;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+      margin-top: 80px;
+    }
+
+    .modal img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+      border-radius: 8px;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 22px;
+      color: #333;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .close-modal:hover {
+      color: red;
+    }
+
+    @media (max-width: 768px) {
+      .content {
+        flex-direction: column;
+        padding: 100px 20px 20px;
+      }
+
+      .segments {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      nav {
+        display: none;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .mobile-nav.active {
+        display: flex;
+      }
+
+      .segment {
+        max-width: 100%;
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 6px 12px;
+        font-size: 1rem;
+      }
+
+      .logo img {
+        height: 30px;
+      }
+
+      .logo span {
+        font-size: 1.1rem;
+      }
+
+      .hamburger {
+        font-size: 1.5rem;
+      }
+
+      .modal-content {
+        margin-top: 70px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="87df3ca0-0f02-4904-b786-b21a4307d155.png" alt="Ananya Logo" />
+      <span>Ananya Living</span>
+    </div>
+    <div class="hamburger" onclick="toggleMenu()">&#9776;</div>
+    <nav>
+      <a href="#"><i class="fas fa-home"></i> Home</a>
+      <a href="about.html"><i class="fas fa-info-circle"></i> About</a>
+      <a href="gallery.html"><i class="fas fa-image"></i> Gallery</a>
+      <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
+    </nav>
+  </header>
+
+  <div id="mobileNav" class="mobile-nav">
+    <a href="#"><i class="fas fa-home"></i> Home</a>
+    <a href="about.html"><i class="fas fa-info-circle"></i> About</a>
+    <a href="gallery.html"><i class="fas fa-image"></i> Gallery</a>
+    <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
+  </div>
+
+  <div class="background-slider">
+    <img src="bg2.jpg" class="slider-image active" loading="lazy">
+    <img src="photo-1600585154340-be6161a56a0c.jpg" class="slider-image" loading="lazy">
+  </div>
+
+  <div class="content">
+    <div class="segments">
+      <div class="segment" onclick="openModal('Plywood')">
+        <h2>Plywood</h2>
+        <p>Smart sofas, foldable coffee tables, entertainment units.</p>
+        <p><strong>Starts at ₹coming soon/-*</strong></p>
+      </div>
+      <div class="segment" onclick="openModal('Sunmica & Laminates')">
+        <h2>Sunmica & Laminates</h2>
+        <p>Modular cabinets, sleek layouts, lighting, compact designs.</p>
+        <p><strong>Starts at ₹coming soon/-*</strong></p>
+      </div>
+      <div class="segment" onclick="openModal('PVC & Charcoal Meterials')">
+        <h2>PVC & Charcoal Meterials</h2>
+        <p>Foldable sets, bar-style counters, space-saving ideas.</p>
+        <p><strong>Starts at ₹coming soon/-*</strong></p>
+      </div>
+      <div class="segment" onclick="openModal('Interior Design')">
+        <h2>Interior Design</h2>
+        <p>Wall-mounted vanities, smart mirrors, compact fittings.</p>
+        <p><strong>Starts at ₹coming soon/-*</strong></p>
+      </div>
+      <div class="segment" onclick="openModal('False Ceiling')">
+        <h2>False Ceiling</h2>
+        <p>LED lighting, geometric designs, sound insulation features.</p>
+        <p><strong>Starts at ₹coming soon/-*</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="imageModal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal()">✖</span>
+      <h3 id="modalTitle">Gallery</h3>
+      <div id="modalImages"></div>
+    </div>
+  </div>
+
+  <script>
+    const images = document.querySelectorAll('.slider-image');
+    let current = 0;
+    setInterval(() => {
+      images[current].classList.remove('active');
+      current = (current + 1) % images.length;
+      images[current].classList.add('active');
+    }, 4000);
+
+    function openModal(title) {
+      const modal = document.getElementById('imageModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalImages = document.getElementById('modalImages');
+      modalTitle.innerText = title + ' Gallery';
+      modalImages.innerHTML = '';
+
+      const imageMap = {
+        "Interior Design": ["living room.jpg", "bg2.jpg", "kitchen1.jpg", "kitchen 2.jpg", "kitchen 3.jpg", "photo-1600585154340-be6161a56a0c.jpg"],
+        "False Ceiling": ["false ceiling 1.png", "false ceiling 2.png"]
+      };
+
+      const imgs = imageMap[title] || [];
+      imgs.forEach(src => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = title + " Image";
+        img.loading = "lazy";
+        modalImages.appendChild(img);
+      });
+
+      modal.style.display = 'flex';
+      document.body.classList.add('modal-open'); // ADD CLASS
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('imageModal').style.display = 'none';
+      document.body.classList.remove('modal-open'); // REMOVE CLASS
+      document.body.style.overflow = 'auto';
+    }
+
+    function toggleMenu() {
+      const mobileNav = document.getElementById('mobileNav');
+      mobileNav.classList.toggle('active');
+    }
+
+    window.onclick = function(e) {
+      const modal = document.getElementById('imageModal');
+      if (e.target === modal) {
+        closeModal();
+      }
+    }
+  </script>
+</body>
+</html>
